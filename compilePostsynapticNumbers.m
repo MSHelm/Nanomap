@@ -67,8 +67,8 @@ type_corr_num=type_corr_num/100;%Change it from percentages to factors.
 % type_corr_num=type_corr_num/100; %Change it from percentages to factors.
 
 % Give volumes of the two spine types, in µm³  == femtoliter
-vol_mush=0.198125;
-vol_flat=0.30975;
+vol_mush=0.1888;
+vol_flat=0.1793;
 
 % bring volumes to liters.
 vol_mush=vol_mush*1E-15;
