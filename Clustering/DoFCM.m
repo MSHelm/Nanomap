@@ -37,7 +37,7 @@ title('Distribution of the maximum membership for each spine (before dropping lo
 % low membership for any cluster will therefore get dropped completely
 % (this is very little though)
 
-U(U<0.3)=0;
+U(U<(2/Nc))=0;
 [~,id]=max(U',[],2);
 save(['U_' types{selection} '_' num2str(Nc) 'clusters'],'U')
 

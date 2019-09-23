@@ -137,25 +137,24 @@ for i=1:numel(folders)
             line_x=dlmread(['spineline_x_',num2str(j),'.txt']);
             line_y=dlmread(['spineline_y_',num2str(j),'.txt']);
             
-            %preprocess Homer
-            homer=imfilter(homer,fspecial('average',[5 5]),'replicate');
-            homer=bpass(homer,1,25);
             
             %create DiO mask, applying different filters
-            %         H=fspecial('average',[2 2]); dio_b=imfilter(medfilt2(dio, [4 4]),H,'replicate');
-            %dio_b=medfilt2(dio);
-            dio_b=dio;
-            dio_bw=imbinarize(mat2gray(dio_b),0.3*otsuthresh(mat2gray(dio_b(:))));
-            %         dio_bw=imbinarize(mat2gray(dio_b),'adaptive','Sensitivity',0.7);
             
-            dio_bw=imfill(dio_bw,'holes');
-            dio_bw=imclose(dio_bw,strel('disk',2));
-            dio_bw=imopen(dio_bw,strel('disk',2));
-            %             filt_db=dio_b;ccc=find(dio_b>0);
-            %             pp=hist(dio_b(ccc),[0.5:1:50]); ppm=max(pp); cccp=find(pp==ppm,1);
-            %             ccc=find(dio_b<cccp+std2(dio_b)); dio_b(ccc)=0;
-            %             ccc=find(dio_b>0); dio_bw=dio_b; dio_bw(ccc)=1; dio_bw=imerode(dio_bw,strel('disk',1));
-            %
+            dio_b=imgaussfilt(dio,3);
+            dio_b=dio_b/max(dio_b(:));
+            di_mean=mean(dio_b(:));
+            di_std=std(dio_b(:));
+            dio_b=dio_b-1.2*di_mean;
+            dio_b=dio_b/di_std;
+            dio_bw=imbinarize(mat2gray(dio_b));
+            
+            %             dio_b=dio;
+            %             dio_bw=imbinarize(mat2gray(dio_b),0.3*otsuthresh(mat2gray(dio_b(:))));
+            %             dio_bw=imfill(dio_bw,'holes');
+            %             dio_bw=imclose(dio_bw,strel('disk',2));
+            %             dio_bw=imopen(dio_bw,strel('disk',2));
+            
+            
             %remove signal outside dio mask.
             ccc=find(dio_bw==0); homer(ccc)=0; sted(ccc)=0; filt_db(ccc)=0;
             
@@ -298,7 +297,9 @@ for i=1:numel(folders)
             %looking at homer structures outside the head.
             ccc=find(leftin~=1); homer(ccc)=0;
             %             Create binary image.
-            homer_bw=imbinarize(mat2gray(homer),'adaptive','Sensitivity',0.2);
+            homer_bw=imfilter(homer,fspecial('average',[5 5]),'replicate');
+            homer_bw=bpass(homer_bw,1,25); 
+            homer_bw=imbinarize(mat2gray(homer_bw),0.5*otsuthresh(mat2gray(homer_bw(:))));
             %             Filter out all homer spots that have below 20 pixels.
             homer_bw=bwareaopen(homer_bw,20);
             
