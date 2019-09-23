@@ -26,6 +26,7 @@ if calcCorrs
         cd([cd_path filesep folders{j}]);
         waitbar(j/numel(folders),w,['Currently calculating ' folders{j}]);
         load SpotAnalysis_total.mat
+                    class=[results_total.Class{:}];
         
         for k=1:numel(classes)
             
@@ -38,7 +39,15 @@ if calcCorrs
             ff = fspecial('average', [10 10]);
             vals=[];
             
-            
+            HeadArea=results_total.HeadArea(class==k);
+            HeadHeight=results_total.HeadArea(class==k);
+            HeadWidth=results_total.HeadArea(class==k);
+            HomerMajorAxisLength=cellfun(results_total.HomerMajor
+            results_total.HeadArea(class==k);
+            HomerFWHMMajorAxisLength=results_total.HeadArea(class==k);
+            HomerArea=results_total.HeadArea(class==k);
+            HomerAreaFWHM=results_total.HeadArea(class==k);
+            HomerNumber=results_total.HeadArea(class==k);
             
             
             

@@ -49,10 +49,16 @@ for i=1:numel(folders)
     %         This messes up the SpotFile entry, but this doesnt matter, as I save it
     %         in a separate file.
     for j=1:numel(fields)
-        if sum(strcmp(fields{j}, {'HomerArea','HomerFWHMArea'}))
-            temp_mush(:,j)=nansum(padcat(results_total.(fields{j}){class==1}),2);
-            temp_flat(:,j)=nansum(padcat(results_total.(fields{j}){class==2}),2);
-            temp_other(:,j)=nansum(padcat(results_total.(fields{j}){class==3}),2);
+        if strcmp(fields{j},'SpotFile')
+            temp_mush(:,j) = padcat(results_total.(fields{j}){class==1});
+            temp_flat(:,j) = padcat(results_total.(fields{j}){class==2});
+            temp_other(:,j) = padcat(results_total.(fields{j}){class==3});
+            continue
+            
+        elseif sum(strcmp(fields{j}, {'HomerArea','HomerFWHMArea'}))
+            temp_mush(:,j)=nansum(padcat(results_total.(fields{j}){class==1}));
+            temp_flat(:,j)=nansum(padcat(results_total.(fields{j}){class==2}));
+            temp_other(:,j)=nansum(padcat(results_total.(fields{j}){class==3}));
             
         else
             temp_mush(:,j)=nanmean(padcat(results_total.(fields{j}){class==1}),2);
