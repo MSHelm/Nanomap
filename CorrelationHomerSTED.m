@@ -26,6 +26,7 @@ if calcCorrs
         cd([cd_path filesep folders{j}]);
         waitbar(j/numel(folders),w,['Currently calculating ' folders{j}]);
         load SpotAnalysis_total.mat
+        class=[results_total.Class{:}];
         
         for k=1:numel(classes)
             
@@ -38,12 +39,18 @@ if calcCorrs
             ff = fspecial('average', [10 10]);
             vals=[];
             
+            HeadArea=results_total.HeadArea(class==k);
+            HeadArea=cell2mat(HeadArea);
+            HeadHeight=results_total.HeadHeight(class==k);
+            HeadHeight=cell2mat(HeadHeight);
+            HeadWidth=results_total.HeadWidth(class==k);
+            HeadWidth=cell2mat(HeadWidth);
+            HomerMajorAxisLength=cellfun(@nanmean, results_total.HomerMajorAxisLength(class==k));
+            HomerArea=cellfun(@nansum, results_total.HomerArea(class==k));
+            HomerNumber=results_total.HomerNumber(class==k);
+            HomerNumber=cell2mat(HomerNumber);
             
-            
-            
-            
-            
-            for i=1:size(dio,3)
+            for i=1:size(homer,3)
                 origh=homer(:,:,i);
                 origd=dio(:,:,i);
                 origs=sted(:,:,i);
@@ -72,8 +79,14 @@ if calcCorrs
                 vals(i,2)=sum(origd(homersignal))-backdio*numel(homersignal);
                 vals(i,3)=sum(origs(homersignal))-backsted*numel(homersignal);
             end
+            
+            vals=cat(2,vals,HeadArea',HeadHeight',HeadWidth',HomerMajorAxisLength',HomerArea',HomerNumber');
+%             dlmwrite(['Z:\user\mhelm1\Nanomap_Analysis\Data\total\_CorrelationHomerSTED\' folders{j} '_' classes{k} '.txt'],vals);
+            %             Remove Head and Homer Measurements from my individual analysis, because I dont
+            %             need it for the ProteinCalculator calculations
+            vals=vals(:,1:3);
             vals=sortrows(vals);
-            results(1:size(vals,1),j*k*3-2:j*k*3)=vals;
+            results(1:size(vals,1),(j-1)*numel(classes)*3+k*3-2:(j-1)*numel(classes)*3+k*3)=vals;
             VarNames(end+1:end+3)={[folders{j} '_' classes{k} '_homer'],[folders{j} '_' classes{k} '_dio'],[folders{j} '_' classes{k} '_sted']};
             %         fit a linear regression to the values
             p=polyfit(vals(:,1),vals(:,3),1);
@@ -92,8 +105,8 @@ if calcCorrs
     results=array2table(results,'VariableNames',VarNames);
     writetable(results,[cd_path filesep 'CorrelationHomerSTED.xlsx'],'Sheet','data');
     
-%     Calculate the mean for each sted signal, which will serve as the
-%     normalizer to calculate the protein copy number per synapse.
+    %     Calculate the mean for each sted signal, which will serve as the
+    %     normalizer to calculate the protein copy number per synapse.
     VarNamesSTED=VarNames(contains(VarNames,'sted'));
     results_sted=results(:,VarNamesSTED);
     results_sted=table2array(results_sted);

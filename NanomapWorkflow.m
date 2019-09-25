@@ -54,7 +54,6 @@ for_lego_model_mushroom_use_play(0);
 for_lego_model_stubby_use_play(0);
 
 CorrelationHomerSTED;
-CollectMorphologyDataForClustering;
 DoFCM;
  
 

@@ -290,6 +290,8 @@ for i=1:numel(proteins)
             homer = tmp.results.(treatments{k});
             tmp = load([cd_path filesep proteins{i} filesep classes{l} '_sted_CombinedImageStack.mat']);
             sted = tmp.results.(treatments{k});
+            
+            
             ff = fspecial('average', [10 10]);
             vals=[];
             
@@ -328,13 +330,13 @@ for i=1:numel(proteins)
         end
     end
 end
-[Cx, Bx, Ax] = ndgrid(1:numel(measures),1:numel(treatments), 1:numel(classes));
+[Cx, Bx, x] = ndgrid(1:numel(classes),1:numel(treatments), 1:numel(measures));
 VarNames = strcat(classes(Ax(:)),'_',treatments(Bx(:)), '_', measures(Cx(:)));
 results=array2table(results,'RowNames',proteins,'VariableNames',VarNames);
 writetable(results,'Z:\user\mhelm1\Nanomap_Analysis\Homeostatic data from Tal\_CorrelationHomerSTED\CorrelationHomerSTED.xlsx','WriteVariableNames',1,'WriteRowNames',1,'sheet','CorrelationHomerSTED');
 
-[Cx, Bx, Ax] = ndgrid(1:numel(measures_calc),1:numel(treatments), 1:numel(classes));
-VarNames = strcat(classes(Ax(:)),'_',treatments(Bx(:)), '_', measures_calc(Cx(:)));
+[Cx, Bx, Ax] = ndgrid( 1:numel(measures_calc),1:numel(classes), 1:numel(treatments));
+VarNames = strcat(classes(Cx(:)),'_',treatments(Bx(:)), '_', measures_calc(Ax(:)));
 results_calc=array2table(results_calc,'RowNames',proteins,'VariableNames',VarNames);
 writetable(results_calc,'Z:\user\mhelm1\Nanomap_Analysis\Homeostatic data from Tal\_CorrelationHomerSTED\CorrelationHomerSTED.xlsx','WriteVariableNames',1,'WriteRowNames',1,'sheet','fits');
 

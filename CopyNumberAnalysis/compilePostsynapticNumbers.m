@@ -310,7 +310,7 @@ for i=1:numel(folders)
     
     
     %     If it is a protein with more than 4 transmembrane domains, or
-    %     over 175kDa size, then use the average of Synaptosome and mass
+    %     are over 175kDa size and show clear signs of low abundance in whole cell data, then use the average of Synaptosome and mass
     %     spectrometry.
     if sum(strcmp(UID,{'Shank1','Shank2','Shank3','Myo5a','Cacna1a','Sptbn2','Grin1','Grin2b','Gria1','Gria2','Gria3','Grm2','Grm5','Ntrk2','Map2'})) %The following proteins I would also list here, but where not detected by Benni: Grin2a, Grik1, Grm1, Drd1, Drd2, Igf1r, LNGFR, nAChR beta 2
         rel_SEM_homer=[];
