@@ -32,14 +32,19 @@ flat_coarse(:,4)=nanmean(flat_orig(:,9:10),2);
 flat_coarse(:,5)=flat_orig(:,11);
 
 
-correlations=nan(size(mush_fine,1),2);
 
-for i=1:size(mush_fine,1)
-    correlations(i,1)=corr2(mush_coarse(i,:),flat_coarse(i,:));
-    correlations(i,2)=corr2(mush_fine(i,:),flat_fine(i,:));
-end
+[rho p] = corr(mush_coarse',flat_coarse');
+rho_coarse = diag(rho);
+p_coarse = diag(p);
 
-correlations=array2table(correlations,'RowNames',proteinnames,'VariableNames',{'Correlation_coarse','Correlation_fine'});
+[rho p] = corr(mush_fine',flat_fine');
+rho_fine = diag(rho);
+p_fine = diag(p);
+
+correlations = [rho_coarse, p_coarse, rho_fine, p_fine];
+
+
+correlations=array2table(correlations,'RowNames',proteinnames,'VariableNames',{'Correlation_coarse','p_coarse','Correlation_fine','p_fine'});
 writetable(correlations,'Z:\user\mhelm1\Nanomap_Analysis\Data\total\ZoneEnrichmentCorrelation.xlsx','WriteVariableNames',1,'WriteRowNames',1);
 end
 

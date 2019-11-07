@@ -283,6 +283,8 @@ set(0, 'DefaultFigureColormap', inferno())
 
 results=nan(numel(proteins),numel(classes)*numel(treatments)*numel(measures));
 results_calc=nan(numel(proteins),numel(classes)*numel(treatments)*numel(measures_calc));
+results_meansted = nan(numel(proteins),numel(classes)*numel(treatments));
+
 for i=1:numel(proteins)
     for l=1:numel(classes)
         for k=1:numel(treatments)
@@ -318,6 +320,8 @@ for i=1:numel(proteins)
             [h, p] = corrcoef(vals(:,1),vals(:,2));
             rsq=h(1,2);
             p=p(1,2);
+            p=p^2;
+            
             results(i,(l-1)*numel(treatments)*numel(measures)+k*numel(measures)-1)=rsq;
             results(i,(l-1)*numel(treatments)*numel(measures)+k*numel(measures))=p;
             
@@ -325,6 +329,8 @@ for i=1:numel(proteins)
             results_calc(i,(l-1)*numel(treatments)*numel(measures_calc)+k*numel(measures_calc)-2)=slope;
             results_calc(i,(l-1)*numel(treatments)*numel(measures_calc)+k*numel(measures_calc)-1)=intercept;
             results_calc(i,(l-1)*numel(treatments)*numel(measures_calc)+k*numel(measures_calc))=rsq;
+            
+            results_meansted(i,(l-1)*numel(treatments)+k) = nanmean(vals(:,2));
         end
     end
 end
@@ -337,6 +343,12 @@ writetable(results,'Z:\user\mhelm1\Nanomap_Analysis\Homeostatic data from Tal\_C
 VarNames = strcat(classes(Ax(:)),'_',treatments(Bx(:)), '_', measures_calc(Cx(:)));
 results_calc=array2table(results_calc,'RowNames',proteins,'VariableNames',VarNames);
 writetable(results_calc,'Z:\user\mhelm1\Nanomap_Analysis\Homeostatic data from Tal\_CorrelationHomerSTED\CorrelationHomerSTED.xlsx','WriteVariableNames',1,'WriteRowNames',1,'sheet','fits');
+
+[Bx, Ax] = ndgrid(1:numel(treatments), 1:numel(classes));
+VarNames = strcat('MeanSTEDIntensity_', classes(Ax(:)),'_',treatments(Bx(:)));
+results_meansted = array2table(results_meansted, 'RowNames', proteins, 'VariableNames', VarNames);
+writetable(results_meansted,'Z:\user\mhelm1\Nanomap_Analysis\Homeostatic data from Tal\_CorrelationHomerSTED\CorrelationHomerSTED.xlsx','WriteVariableNames',1,'WriteRowNames',1,'sheet','MeanSTEDSignal');
+
 
 
 

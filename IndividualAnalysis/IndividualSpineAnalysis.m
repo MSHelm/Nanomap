@@ -57,6 +57,7 @@ for i=1:numel(folders)
         'HomerFWHMCenterAngle',[],...
         'HomerFWHMArea',[],...
         'STEDHeadIntensity',[],...
+        'STEDHeadSpotNumber',[],...
         'STEDHomerIntensity',[],...
         'STEDHomerEnrichment',[],...
         'STEDHomerFWHMIntensity',[],...
@@ -137,43 +138,17 @@ for i=1:numel(folders)
             line_x=dlmread(['spineline_x_',num2str(j),'.txt']);
             line_y=dlmread(['spineline_y_',num2str(j),'.txt']);
             
-            
             %create DiO mask, applying different filters
-            
-            dio_b=imgaussfilt(dio,3);
-            dio_b=dio_b/max(dio_b(:));
-            di_mean=mean(dio_b(:));
-            di_std=std(dio_b(:));
-            dio_b=dio_b-1.2*di_mean;
-            dio_b=dio_b/di_std;
-            dio_bw=imbinarize(mat2gray(dio_b));
-            
-            %             dio_b=dio;
-            %             dio_bw=imbinarize(mat2gray(dio_b),0.3*otsuthresh(mat2gray(dio_b(:))));
-            %             dio_bw=imfill(dio_bw,'holes');
-            %             dio_bw=imclose(dio_bw,strel('disk',2));
-            %             dio_bw=imopen(dio_bw,strel('disk',2));
-            
+            dio_bw = foregrounddetect(dio,3);
             
             %remove signal outside dio mask.
             ccc=find(dio_bw==0); homer(ccc)=0; sted(ccc)=0; filt_db(ccc)=0;
-            
             
             %Find center of spine
             centerrow=round((coord.topy(j)+coord.bottomy(j))/2);
             centercolumn=round((coord.rightx(j)+coord.leftx(j))/2);
             results.HeadCenterRow{j}=centerrow;
             results.HeadCenterColumn{j}=centercolumn;
-            
-            %                 %Get Major Axis length of head. This can be done faster with my
-            %         %code.
-            %         polix=[coord.leftx(j), coord.topx(j), coord.rightx(j), coord.bottomx(j)];
-            %         poliy=[coord.lefty(j), coord.topy(j), coord.righty(j), coord.bottomy(j)];
-            %         dioo=dio-dio; dioreg=roipoly(dio,polix,poliy); ccc=find(dioreg==1); dioo(ccc)=1;
-            %         diameter=regionprops(bwlabel(dioo),'MajorAxisLength');
-            %         diameter=struct2cell(diameter);
-            %         diameter=cell2mat(diameter); diameter=diameter(1)+3;%%% the maximum head diameter + 3 pixels
-            %
             
             %Calculate width (left-right) and height (bottom-top) distances of
             %the head. This is almost identical to above script but I think
@@ -253,9 +228,7 @@ for i=1:numel(folders)
             temp_leftin=imfill(temp_leftin,'holes');
             leftin(temp_leftin==1 & leftin==0)=2;%%%% 2 = in spine root
             temp_leftin=[];
-            
             results.RootArea{j}=sum(leftin(:)==2);
-            
             
             %             Create accurate head mask. For this take initial
             %             ellipse guess from Silvio and expand it. Then
@@ -276,43 +249,19 @@ for i=1:numel(folders)
             results.HeadArea{j}=HeadStats.Area;
             results.HeadMajorAxisLength{j}=HeadStats.MajorAxisLength;
             results.HeadMinorAxisLength{j}=HeadStats.MinorAxisLength;
-            results.HeadMajorMinorAxisOrientation{j}=HeadStats.Orientation;
-            %             results.HeadConvexHull{j}=HeadStats.ConvexHull;
-            %             results.HeadConvexImage{j}=HeadStats.ConvexImage;
-            %             results.HeadEccentricity{j}=HeadStats.Eccentricity;
-            %             dio_center=dio_bw(100:200,100:200);
-            %             dio_center=imerode(dio_center,strel('disk',5));
-            %             temp=dio_center;
-            %             dio_center=zeros(size(dio));
-            %             dio_center(round(size(dio,1)/2)-20:round(size(dio,1)/2)+20,round(size(dio,1)/2)-20:round(size(dio,1)/2)+20)=temp(30:70,30:70);
-            %             dio_center=imdilate(dio_center,strel('disk',10));
-            %             head_mask=zeros(size(dio));
-            %             head_mask(:)=(dio_center(:)+dio_bw(:))==2;
-            %             leftin(head_mask(:)>0)=1;
-            %             clear temp dio_center
-            
-            
+            results.HeadMajorMinorAxisOrientation{j}=HeadStats.Orientation; 
             
             %Set homer outside spinehead to 0. This prevents us from
             %looking at homer structures outside the head.
             ccc=find(leftin~=1); homer(ccc)=0;
+            
             %             Create binary image.
             homer_bw=imfilter(homer,fspecial('average',[5 5]),'replicate');
             homer_bw=bpass(homer_bw,1,25); 
             homer_bw=imbinarize(mat2gray(homer_bw),0.5*otsuthresh(mat2gray(homer_bw(:))));
+            
             %             Filter out all homer spots that have below 20 pixels.
-            homer_bw=bwareaopen(homer_bw,20);
-            
-            
-            % The following code snippet would have only taken the homer structure closest to
-            % the top point. But region props can also deal with multiple
-            % structures :))
-            % %             Find center of mass for the selected homer
-            %             siz=size(homer);ccc=find(homer_bwl==homer_label);
-            %             [xx yy]=ind2sub([siz(1) siz(2)],ccc);
-            %             mm=homer(ccc);
-            
-            
+            homer_bw=bwareaopen(homer_bw,20);           
             homer_bwl=bwlabel(homer_bw);
             
             stats=regionprops('table',homer_bwl,homer,'Centroid','MajorAxisLength','MinorAxisLength','Orientation','Area','MeanIntensity','MaxIntensity');
@@ -324,8 +273,6 @@ for i=1:numel(folders)
             results.HomerArea{j}=stats.Area';
             results.HomerMeanIntensity{j}=stats.MeanIntensity';
             results.HomerMaxIntensity{j}=stats.MaxIntensity';
-            %             results.HomerConvexHull{j}=stats.ConvexHull';
-            %             results.HomerConvexImage{j}=stats.ConvexImage';
             
             %             find distances of the homer spots to the membrane
             HomerDist=[];
@@ -363,7 +310,21 @@ for i=1:numel(folders)
             results.HomerEccentricity{j}=axial_eccentricity;
             
             %             Get number of detected PSDs
-            results.HomerNumber{j}=max(max(homer_bwl));
+            results.HomerNumber{j}=max(max(homer_bwl));          
+            
+            sted_head = imgaussfilt(sted,1);
+            sted_head(sted_head==0) = NaN;
+            sted_head = sted_head/nanmax(sted_head(:));
+            sted_head_mean = nanmean(sted_head(:));
+            sted_head_std = nanstd(sted_head(:));
+            sted_head = sted_head - 1.2*sted_head_mean;
+            sted_head = sted_head / sted_head_std;
+            sted_head_bw = imbinarize(sted_head,'adaptive');
+            sted_head_bw(leftin~=1) = 0;
+            sted_head_bw = bwareaopen(sted_head_bw,16);
+            sted_head_bwl = bwlabel(sted_head_bw);
+            results.STEDHeadSpotNumber{j} = max(sted_head_bwl(:));
+            
             
             %             Get total intensity of staining in head. This will be used
             %             for the clustering analysis
@@ -380,13 +341,11 @@ for i=1:numel(folders)
             end
             results.STEDHomerIntensity{j}=homer_intensity;
             
-            
             %             Get "Enrichment" of staining homer over shaft
             results.STEDHomerEnrichment{j}=(results.STEDHomerIntensity{j}./results.HomerArea{j})/results.STEDShaftIntensity{j};
             
             %             Get total intensity of staining over whole image
-            results.STEDTotalIntensity{j}=sum(sted(:));
-            
+            results.STEDTotalIntensity{j}=sum(sted(:));   
             
             %             Analyze sted spots
             %             remove spots smaller than 3 pixels
@@ -414,10 +373,7 @@ for i=1:numel(folders)
             results.STEDMinorAxisLength{j}=stedstats.MinorAxisLength';
             results.STEDArea{j}=stedstats.Area';
             results.STEDMeanIntensity{j}=stedstats.MeanIntensity';
-            results.STEDMaxIntensity{j}=stedstats.MaxIntensity';
-            %             results.STEDConvexHull{j}=stedstats.ConvexHull';
-            %             results.STEDConvexImage{j}=stedstats.ConvexImage';
-            
+            results.STEDMaxIntensity{j}=stedstats.MaxIntensity';     
             
             %             Get data on distribution of spots, i.e. distances of spots to
             %             each other
@@ -430,6 +386,7 @@ for i=1:numel(folders)
                 StedDist(l)=DistMap(round(results.STEDCentroidY{j}(l)),round(results.STEDCentroidX{j}(l)));
             end
             results.STEDDioDistance{j}=StedDist;
+            
             
             %                 get data on distance to homer.
             
@@ -454,8 +411,6 @@ for i=1:numel(folders)
             results.HomerFWHMArea{j}=stats.Area';
             results.HomerFWHMMeanIntensity{j}=stats.MeanIntensity';
             results.HomerFWHMMaxIntensity{j}=stats.MaxIntensity';
-            %             results.HomerConvexHull{j}=stats.ConvexHull';
-            %             results.HomerConvexImage{j}=stats.ConvexImage';
             
             %             find distances of the homer spots to the membrane
             HomerDist=[];
@@ -481,8 +436,7 @@ for i=1:numel(folders)
                 angle(l)=atan2d(vectorHomer{l}(1),vectorHomer{l}(2));
             end
             results.HomerFWHMCenterAngle{j}=angle;
-            
-            
+               
             %             Excentricity of homer in regard to top-bottom axis of head.
             %             Modified after Tals calculation. 1= at bttom, -1 =
             %             at head
@@ -492,8 +446,7 @@ for i=1:numel(folders)
                 axial_eccentricity(l)=(rel_dist_top(l)-rel_dist_bottom(l))/(rel_dist_top(l)+rel_dist_bottom(l));
             end
             results.HomerFWHMEccentricity{j}=axial_eccentricity;
-            
-            
+                 
             %                          Get total intensity of staining in Homer FWHM.
             %             results.STEDHomerFWHMIntensity{j}=sum(sted(homer_bw_fwhm==1));
             homer_intensity=[];
@@ -533,8 +486,6 @@ for i=1:numel(folders)
                 StedDist(l)=DistMap(round(results.STEDCentroidY{j}(l)),round(results.STEDCentroidX{j}(l)));
             end
             results.STEDHeadTopDistance{j}=StedDist;
-            
-            
             
             %             Get distance to bottom of head
             head_bottom=zeros(size(dio));
