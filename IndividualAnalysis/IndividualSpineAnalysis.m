@@ -86,6 +86,7 @@ for i=1:numel(folders)
         'STEDEccentricity',[],...
         'STEDLaterality',[],...
         'STEDDistribution',[],...
+        'STEDNearestNeighborDistance',[],...
         'STEDHeadEnrichment',[],...
         'SpotFile',[]...
         );
@@ -378,6 +379,22 @@ for i=1:numel(folders)
             %             Get data on distribution of spots, i.e. distances of spots to
             %             each other
             results.STEDDistribution{j}=pdist(cat(2,results.STEDCentroidX{j}',results.STEDCentroidY{j}'));
+            
+%             Get nearest neighbor distance
+            STEDPoints=[round(results.STEDCentroidX{j}'),round(results.STEDCentroidY{j}')];
+            NearestNeighbor = nan(1,max(max(wavelet_l)));
+            
+            for points=1:max(max(wavelet_l))
+                PQ = [];
+                PQ = STEDPoints(points,:);
+                P = [];
+                P = STEDPoints;
+                P(points,:) = []; %remove the query point
+                [~, dist] = dsearchn(P,PQ);
+                NearestNeighbor(points) = dist;
+            end
+            
+            results.STEDNearestNeighborDistance{j}=NearestNeighbor;
             
             %             get data on distance to DiO
             DistMap=bwdist(edge(dio_bw));

@@ -37,6 +37,7 @@ ZoneProteinEnrichmentSEM;
 CollectMorphologyDataForClustering;
 
 CreatePDFFigures;
+IndividualAnalysisPrismFigures;
 
 determineSpineTypeComposition;
 program_normalize_by_division_by_background_non_cellular;

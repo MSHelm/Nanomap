@@ -79,7 +79,7 @@ for i=1:numel(folders)
         
         %     get proteinname of current folder to find the respective row in the
         %     zone enrichment table
-        exp='\S*(?=_UID)';
+        exp='(?<=UID-)[a-zA-Z0-9]*';
         proteinname=matlab.lang.makeValidName(char(regexp(folders{i},exp,'match')));
         
         f_mush=figure('Visible','off');
