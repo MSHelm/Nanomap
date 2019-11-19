@@ -80,8 +80,8 @@ for i=1:numel(folders)
     results=padcat(tmp{:},T_mush_foldoveravg{id_mush,:}',T_mush_foldoveravg_sem{id_mush,:}',T_flat_foldoveravg{id_flat,:}',T_flat_foldoveravg_sem{id_flat,:}');
     results=array2table(results,'VariableNames',[reshape([sprintfc('Mushroom%i',1:8);sprintfc('Stumpy%i',1:8)],1,[]),{'MushroomMean','MushroomSEM','StumpyMean','StumpySEM'}]);
     
-    writetable(results,['Z:\user\mhelm1\Nanomap_Analysis\Data\total\_Figures\Prism\' folders{i} '.csv']);
-    %     csvwrite(['Z:\user\mhelm1\Nanomap_Analysis\Data\total\_Figures\Prism\' folders{i} '_IndividualPrism.csv'],results);
+    writetable(results,['Z:\user\mhelm1\Nanomap_Analysis\Data\total\_PrismFigures\' folders{i} '.csv']);
+    %     csvwrite(['Z:\user\mhelm1\Nanomap_Analysis\Data\total\_PrismFigures' folders{i} '_IndividualPrism.csv'],results);
     
 end
 end

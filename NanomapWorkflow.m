@@ -11,7 +11,7 @@ reps={'Z:\user\mhelm1\Nanomap_Analysis\Data\Replicate1','Z:\user\mhelm1\Nanomap_
 
 for i=1:numel(reps)
 align_images_imwarp_parallelized_150px_myfilt(reps{i});
-align_images_imwarp_parallelized_150px_myfilt_nostedfilt(reps{i});
+align_images_imwarp_parallelized_150px_mydiofilt_nostedfilt(reps{i});
 align_images_imwarp_parallelized_150px_nodiofilt_nostedfilt(reps{i});
 end 
 
@@ -50,7 +50,10 @@ for i=1:numel(reps_ms)
 end
 STEDCorrelations;
 compilePostsynapticNumbers;
+for_lego_model_mushroom_organelles;
+corrector_MH;
 for_lego_model_mushroom_use_play(0);
+for_lego_model_stubby_organelles;
 for_lego_model_stubby_use_play(0);
 
 CorrelationHomerSTED;

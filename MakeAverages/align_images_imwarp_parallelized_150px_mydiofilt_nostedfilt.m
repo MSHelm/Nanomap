@@ -1,4 +1,4 @@
-function align_images_imwarp_parallelized_150px_myfilt_nostedfilt(cd_path)
+function align_images_imwarp_parallelized_150px_mydiofilt_nostedfilt(cd_path)
 %global counter angles scaling bottomx topx rightx leftx bottomy topy righty lefty classification no_sted_images...
 %    rotation_angles vertical_shifts horizontal_shifts...
 %    bottomneckx bottomnecky shafttopleftx shafttoplefty shafttoprightx shafttoprighty shaftbottomrightx shaftbottomrighty shaftbottomleftx shaftbottomlefty...
@@ -26,7 +26,7 @@ for treatment=3:numel(folders)
     treatmentname=sfolder(end);treatmentname=treatmentname{:};
     
     
-    if exist('bottomx.txt')==2 %&& exist('Mush_dio_average_150px_myfilt_nostedfilt.txt')==0
+    if exist('bottomx.txt')==2 %&& exist('Mush_dio_average_150px_mydiofilt_nostedfilt.txt')==0
         
         %% Read in the data
         [~, mess]=fileattrib('*_spots*.txt');
@@ -114,23 +114,23 @@ for treatment=3:numel(folders)
             %             for i=1:numel(mess)
             disp(['Analyzing ' num2str(i) ' out of ' num2str(numel(mess)) ' in folder ' sfolder{end}])
 %             
-%                         if exist(['sted_aligned_150px_myfilt_nostedfilt_' num2str(i) '.txt'],'file')==2
+%                         if exist(['sted_aligned_150px_mydiofilt_nostedfilt_' num2str(i) '.txt'],'file')==2
 %             %                 %% if spot was already analyzed read in the files and add to the averages
-%                             sted_aligned=dlmread(strcat('sted_aligned_150px_myfilt_nostedfilt_',num2str(i),'.txt'));
-%                             dio_aligned=dlmread(strcat('dio_aligned_150px_myfilt_nostedfilt_',num2str(i),'.txt'));
-%                             homer_aligned=dlmread(strcat('homer_aligned_150px_myfilt_nostedfilt_',num2str(i),'.txt'));
-%                             %                 sted_aligned_resized=dlmread(strcat('sted_aligned_resized_150px_myfilt_nostedfilt_',num2str(i),'.txt'));
-%                             %                 dio_aligned_resized=dlmread(strcat('dio_aligned_resized_150px_myfilt_nostedfilt_',num2str(i),'.txt'));
-%                             %                 homer_aligned_resized=dlmread(strcat('homer_aligned_resized_150px_myfilt_nostedfilt_',num2str(i),'.txt'));
-%                             sted_aligned_noback=dlmread(strcat('sted_aligned_noback_150px_myfilt_nostedfilt_',num2str(i),'.txt'));
-%                             dio_aligned_noback=dlmread(strcat('dio_aligned_noback_150px_myfilt_nostedfilt_',num2str(i),'.txt'));
-%                             homer_aligned_noback=dlmread(strcat('homer_aligned_noback_150px_myfilt_nostedfilt_',num2str(i),'.txt'));
-%                             sted_aligned_norm2shaft=dlmread(strcat('sted_aligned_norm2shaft_150px_myfilt_nostedfilt_',num2str(i),'.txt'));
-%                             dio_aligned_norm2shaft=dlmread(strcat('dio_aligned_norm2shaft_150px_myfilt_nostedfilt_',num2str(i),'.txt'));
-%                             homer_aligned_norm2shaft=dlmread(strcat('homer_aligned_norm2shaft_150px_myfilt_nostedfilt_',num2str(i),'.txt'));
-%                             sted_aligned_noback_norm2shaft=dlmread(strcat('sted_aligned_noback_norm2shaft_150px_myfilt_nostedfilt_',num2str(i),'.txt'));
-%                             dio_aligned_noback_norm2shaft=dlmread(strcat('dio_aligned_noback_norm2shaft_150px_myfilt_nostedfilt_',num2str(i),'.txt'));
-%                             homer_aligned_noback_norm2shaft=dlmread(strcat('homer_aligned_noback_norm2shaft_150px_myfilt_nostedfilt_',num2str(i),'.txt'));
+%                             sted_aligned=dlmread(strcat('sted_aligned_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'));
+%                             dio_aligned=dlmread(strcat('dio_aligned_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'));
+%                             homer_aligned=dlmread(strcat('homer_aligned_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'));
+%                             %                 sted_aligned_resized=dlmread(strcat('sted_aligned_resized_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'));
+%                             %                 dio_aligned_resized=dlmread(strcat('dio_aligned_resized_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'));
+%                             %                 homer_aligned_resized=dlmread(strcat('homer_aligned_resized_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'));
+%                             sted_aligned_noback=dlmread(strcat('sted_aligned_noback_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'));
+%                             dio_aligned_noback=dlmread(strcat('dio_aligned_noback_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'));
+%                             homer_aligned_noback=dlmread(strcat('homer_aligned_noback_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'));
+%                             sted_aligned_norm2shaft=dlmread(strcat('sted_aligned_norm2shaft_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'));
+%                             dio_aligned_norm2shaft=dlmread(strcat('dio_aligned_norm2shaft_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'));
+%                             homer_aligned_norm2shaft=dlmread(strcat('homer_aligned_norm2shaft_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'));
+%                             sted_aligned_noback_norm2shaft=dlmread(strcat('sted_aligned_noback_norm2shaft_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'));
+%                             dio_aligned_noback_norm2shaft=dlmread(strcat('dio_aligned_noback_norm2shaft_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'));
+%                             homer_aligned_noback_norm2shaft=dlmread(strcat('homer_aligned_noback_norm2shaft_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'));
 %             %
 %             %                 %then add the values to the average
 %                             if classification(i)==1
@@ -456,27 +456,27 @@ rot_shifted_homer_noback=imrotate(shifted_homer_noback,(angle));
                 
                 %% write individual files and add to average by classification
                 try
-                    dlmwrite(strcat('sted_aligned_150px_myfilt_nostedfilt_',num2str(i),'.txt'),sted_aligned);
-                    dlmwrite(strcat('dio_aligned_150px_myfilt_nostedfilt_',num2str(i),'.txt'),dio_aligned);
-                    dlmwrite(strcat('homer_aligned_150px_myfilt_nostedfilt_',num2str(i),'.txt'),homer_aligned);
-                    %dlmwrite(strcat('sted_aligned_resized_150px_myfilt_nostedfilt_',num2str(i),'.txt'),sted_aligned_resized);
-                    %dlmwrite(strcat('dio_aligned_resized_150px_myfilt_nostedfilt_',num2str(i),'.txt'),dio_aligned_resized);
-                    %dlmwrite(strcat('homer_aligned_resized_150px_myfilt_nostedfilt_',num2str(i),'.txt'),homer_aligned_resized);
-%                     dlmwrite(strcat('sted_aligned_noback_150px_myfilt_nostedfilt_',num2str(i),'.txt'),sted_aligned_noback);
-%                     dlmwrite(strcat('dio_aligned_noback_150px_myfilt_nostedfilt_',num2str(i),'.txt'),dio_aligned_noback);
-%                     dlmwrite(strcat('homer_aligned_noback_150px_myfilt_nostedfilt_',num2str(i),'.txt'),homer_aligned_noback);
-%                     dlmwrite(strcat('sted_aligned_norm2shaft_150px_myfilt_nostedfilt_',num2str(i),'.txt'),sted_aligned_norm2shaft);
-%                     dlmwrite(strcat('dio_aligned_norm2shaft_150px_myfilt_nostedfilt_',num2str(i),'.txt'),dio_aligned_norm2shaft);
-%                     dlmwrite(strcat('homer_aligned_norm2shaft_150px_myfilt_nostedfilt_',num2str(i),'.txt'),homer_aligned_norm2shaft);
-%                     dlmwrite(strcat('sted_aligned_noback_norm2shaft_150px_myfilt_nostedfilt_',num2str(i),'.txt'),sted_aligned_noback_norm2shaft);
-%                     dlmwrite(strcat('dio_aligned_noback_norm2shaft_150px_myfilt_nostedfilt_',num2str(i),'.txt'),dio_aligned_noback_norm2shaft);
-%                     dlmwrite(strcat('homer_aligned_noback_norm2shaft_150px_myfilt_nostedfilt_',num2str(i),'.txt'),homer_aligned_noback_norm2shaft);
+                    dlmwrite(strcat('sted_aligned_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),sted_aligned);
+                    dlmwrite(strcat('dio_aligned_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),dio_aligned);
+                    dlmwrite(strcat('homer_aligned_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),homer_aligned);
+                    %dlmwrite(strcat('sted_aligned_resized_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),sted_aligned_resized);
+                    %dlmwrite(strcat('dio_aligned_resized_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),dio_aligned_resized);
+                    %dlmwrite(strcat('homer_aligned_resized_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),homer_aligned_resized);
+%                     dlmwrite(strcat('sted_aligned_noback_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),sted_aligned_noback);
+%                     dlmwrite(strcat('dio_aligned_noback_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),dio_aligned_noback);
+%                     dlmwrite(strcat('homer_aligned_noback_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),homer_aligned_noback);
+%                     dlmwrite(strcat('sted_aligned_norm2shaft_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),sted_aligned_norm2shaft);
+%                     dlmwrite(strcat('dio_aligned_norm2shaft_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),dio_aligned_norm2shaft);
+%                     dlmwrite(strcat('homer_aligned_norm2shaft_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),homer_aligned_norm2shaft);
+%                     dlmwrite(strcat('sted_aligned_noback_norm2shaft_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),sted_aligned_noback_norm2shaft);
+%                     dlmwrite(strcat('dio_aligned_noback_norm2shaft_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),dio_aligned_noback_norm2shaft);
+%                     dlmwrite(strcat('homer_aligned_noback_norm2shaft_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),homer_aligned_noback_norm2shaft);
                     
                     %save the rectangle!
                     
-                    dlmwrite(strcat('rectangle_shaft_sted_150px_myfilt_nostedfilt_',num2str(i),'.txt'),rectangle_shaft_sted);
-                    dlmwrite(strcat('rectangle_shaft_dio_150px_myfilt_nostedfilt_',num2str(i),'.txt'),rectangle_shaft_dio);
-                    dlmwrite(strcat('rectangle_shaft_homer_150px_myfilt_nostedfilt_',num2str(i),'.txt'),rectangle_shaft_homer);
+                    dlmwrite(strcat('rectangle_shaft_sted_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),rectangle_shaft_sted);
+                    dlmwrite(strcat('rectangle_shaft_dio_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),rectangle_shaft_dio);
+                    dlmwrite(strcat('rectangle_shaft_homer_150px_mydiofilt_nostedfilt_',num2str(i),'.txt'),rectangle_shaft_homer);
                     
                 catch
                     disp('Error while writing the aligned spot')
@@ -552,69 +552,69 @@ rot_shifted_homer_noback=imrotate(shifted_homer_noback,(angle));
         end
         
         %% Write files
-        dlmwrite('Mush_sted_average_150px_myfilt_nostedfilt.txt',(Mush_sted_average./(sum(classification(:)==1))));
-        dlmwrite('Mush_dio_average_150px_myfilt_nostedfilt.txt',(Mush_dio_average./(sum(classification(:)==1))));
-        dlmwrite('Mush_homer_average_150px_myfilt_nostedfilt.txt',(Mush_homer_average./(sum(classification(:)==1))));
+        dlmwrite('Mush_sted_average_150px_mydiofilt_nostedfilt.txt',(Mush_sted_average./(sum(classification(:)==1))));
+        dlmwrite('Mush_dio_average_150px_mydiofilt_nostedfilt.txt',(Mush_dio_average./(sum(classification(:)==1))));
+        dlmwrite('Mush_homer_average_150px_mydiofilt_nostedfilt.txt',(Mush_homer_average./(sum(classification(:)==1))));
         
-        %dlmwrite('Mush_sted_resized_average_150px_myfilt_nostedfilt.txt',(Mush_sted_resized_average./(sum(classification(:)==1))));
-        %dlmwrite('Mush_dio_resized_average_150px_myfilt_nostedfilt.txt',(Mush_dio_resized_average./(sum(classification(:)==1))));
-        %dlmwrite('Mush_homer_resized_average_150px_myfilt_nostedfilt.txt',(Mush_homer_resized_average./(sum(classification(:)==1))));
+        %dlmwrite('Mush_sted_resized_average_150px_mydiofilt_nostedfilt.txt',(Mush_sted_resized_average./(sum(classification(:)==1))));
+        %dlmwrite('Mush_dio_resized_average_150px_mydiofilt_nostedfilt.txt',(Mush_dio_resized_average./(sum(classification(:)==1))));
+        %dlmwrite('Mush_homer_resized_average_150px_mydiofilt_nostedfilt.txt',(Mush_homer_resized_average./(sum(classification(:)==1))));
 %         
-%         dlmwrite('Mush_sted_noback_average_150px_myfilt_nostedfilt.txt',(Mush_sted_noback_average./(sum(classification(:)==1))));
-%         dlmwrite('Mush_dio_noback_average_150px_myfilt_nostedfilt.txt',(Mush_dio_noback_average./(sum(classification(:)==1))));
-%         dlmwrite('Mush_homer_noback_average_150px_myfilt_nostedfilt.txt',(Mush_homer_noback_average./(sum(classification(:)==1))));
+%         dlmwrite('Mush_sted_noback_average_150px_mydiofilt_nostedfilt.txt',(Mush_sted_noback_average./(sum(classification(:)==1))));
+%         dlmwrite('Mush_dio_noback_average_150px_mydiofilt_nostedfilt.txt',(Mush_dio_noback_average./(sum(classification(:)==1))));
+%         dlmwrite('Mush_homer_noback_average_150px_mydiofilt_nostedfilt.txt',(Mush_homer_noback_average./(sum(classification(:)==1))));
 %         
-%         dlmwrite('Mush_sted_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Mush_sted_norm2shaft_average./(sum(classification(:)==1))));
-%         dlmwrite('Mush_dio_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Mush_dio_norm2shaft_average./(sum(classification(:)==1))));
-%         dlmwrite('Mush_homer_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Mush_homer_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Mush_sted_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Mush_sted_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Mush_dio_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Mush_dio_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Mush_homer_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Mush_homer_norm2shaft_average./(sum(classification(:)==1))));
 %         
-%         dlmwrite('Mush_sted_noback_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Mush_sted_noback_norm2shaft_average./(sum(classification(:)==1))));
-%         dlmwrite('Mush_dio_noback_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Mush_dio_noback_norm2shaft_average./(sum(classification(:)==1))));
-%         dlmwrite('Mush_homer_noback_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Mush_homer_noback_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Mush_sted_noback_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Mush_sted_noback_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Mush_dio_noback_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Mush_dio_noback_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Mush_homer_noback_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Mush_homer_noback_norm2shaft_average./(sum(classification(:)==1))));
         
-        dlmwrite('Flat_sted_average_150px_myfilt_nostedfilt.txt',(Flat_sted_average./(sum(classification(:)==2))));
-        dlmwrite('Flat_dio_average_150px_myfilt_nostedfilt.txt',(Flat_dio_average./(sum(classification(:)==2))));
-        dlmwrite('Flat_homer_average_150px_myfilt_nostedfilt.txt',(Flat_homer_average./(sum(classification(:)==2))));
+        dlmwrite('Flat_sted_average_150px_mydiofilt_nostedfilt.txt',(Flat_sted_average./(sum(classification(:)==2))));
+        dlmwrite('Flat_dio_average_150px_mydiofilt_nostedfilt.txt',(Flat_dio_average./(sum(classification(:)==2))));
+        dlmwrite('Flat_homer_average_150px_mydiofilt_nostedfilt.txt',(Flat_homer_average./(sum(classification(:)==2))));
 %         
-%         dlmwrite('Flat_sted_resized_average_150px_myfilt_nostedfilt.txt',(Flat_sted_resized_average./(sum(classification(:)==2))));
-%         dlmwrite('Flat_dio_resized_average_150px_myfilt_nostedfilt.txt',(Flat_dio_resized_average./(sum(classification(:)==2))));
-%         dlmwrite('Flat_homer_resized_average_150px_myfilt_nostedfilt.txt',(Flat_homer_resized_average./(sum(classification(:)==2))));
+%         dlmwrite('Flat_sted_resized_average_150px_mydiofilt_nostedfilt.txt',(Flat_sted_resized_average./(sum(classification(:)==2))));
+%         dlmwrite('Flat_dio_resized_average_150px_mydiofilt_nostedfilt.txt',(Flat_dio_resized_average./(sum(classification(:)==2))));
+%         dlmwrite('Flat_homer_resized_average_150px_mydiofilt_nostedfilt.txt',(Flat_homer_resized_average./(sum(classification(:)==2))));
 %         
-%         dlmwrite('Flat_sted_noback_average_150px_myfilt_nostedfilt.txt',(Flat_sted_noback_average./(sum(classification(:)==2))));
-%         dlmwrite('Flat_dio_noback_average_150px_myfilt_nostedfilt.txt',(Flat_dio_noback_average./(sum(classification(:)==2))));
-%         dlmwrite('Flat_homer_noback_average_150px_myfilt_nostedfilt.txt',(Flat_homer_noback_average./(sum(classification(:)==2))));
+%         dlmwrite('Flat_sted_noback_average_150px_mydiofilt_nostedfilt.txt',(Flat_sted_noback_average./(sum(classification(:)==2))));
+%         dlmwrite('Flat_dio_noback_average_150px_mydiofilt_nostedfilt.txt',(Flat_dio_noback_average./(sum(classification(:)==2))));
+%         dlmwrite('Flat_homer_noback_average_150px_mydiofilt_nostedfilt.txt',(Flat_homer_noback_average./(sum(classification(:)==2))));
 %         
-%         dlmwrite('Flat_sted_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Flat_sted_norm2shaft_average./(sum(classification(:)==1))));
-%         dlmwrite('Flat_dio_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Flat_dio_norm2shaft_average./(sum(classification(:)==1))));
-%         dlmwrite('Flat_homer_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Flat_homer_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Flat_sted_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Flat_sted_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Flat_dio_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Flat_dio_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Flat_homer_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Flat_homer_norm2shaft_average./(sum(classification(:)==1))));
 %         
-%         dlmwrite('Flat_sted_noback_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Flat_sted_noback_norm2shaft_average./(sum(classification(:)==1))));
-%         dlmwrite('Flat_dio_noback_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Flat_dio_noback_norm2shaft_average./(sum(classification(:)==1))));
-%         dlmwrite('Flat_homer_noback_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Flat_homer_noback_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Flat_sted_noback_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Flat_sted_noback_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Flat_dio_noback_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Flat_dio_noback_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Flat_homer_noback_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Flat_homer_noback_norm2shaft_average./(sum(classification(:)==1))));
 %         
-        dlmwrite('Other_sted_average_150px_myfilt_nostedfilt.txt',(Other_sted_average./(sum(classification(:)==3))));
-        dlmwrite('Other_dio_average_150px_myfilt_nostedfilt.txt',(Other_dio_average./(sum(classification(:)==3))));
-        dlmwrite('Other_homer_average_150px_myfilt_nostedfilt.txt',(Other_homer_average./(sum(classification(:)==3))));
+        dlmwrite('Other_sted_average_150px_mydiofilt_nostedfilt.txt',(Other_sted_average./(sum(classification(:)==3))));
+        dlmwrite('Other_dio_average_150px_mydiofilt_nostedfilt.txt',(Other_dio_average./(sum(classification(:)==3))));
+        dlmwrite('Other_homer_average_150px_mydiofilt_nostedfilt.txt',(Other_homer_average./(sum(classification(:)==3))));
         
-%         dlmwrite('Other_sted_resized_average_150px_myfilt_nostedfilt.txt',(Other_sted_resized_average./(sum(classification(:)==3))));
-%         dlmwrite('Other_dio_resized_average_150px_myfilt_nostedfilt.txt',(Other_dio_resized_average./(sum(classification(:)==3))));
-%         dlmwrite('Other_homer_resized_average_150px_myfilt_nostedfilt.txt',(Other_homer_resized_average./(sum(classification(:)==3))));
+%         dlmwrite('Other_sted_resized_average_150px_mydiofilt_nostedfilt.txt',(Other_sted_resized_average./(sum(classification(:)==3))));
+%         dlmwrite('Other_dio_resized_average_150px_mydiofilt_nostedfilt.txt',(Other_dio_resized_average./(sum(classification(:)==3))));
+%         dlmwrite('Other_homer_resized_average_150px_mydiofilt_nostedfilt.txt',(Other_homer_resized_average./(sum(classification(:)==3))));
 %         
-%         dlmwrite('Other_sted_noback_average_150px_myfilt_nostedfilt.txt',(Other_sted_noback_average./(sum(classification(:)==3))));
-%         dlmwrite('Other_dio_noback_average_150px_myfilt_nostedfilt.txt',(Other_dio_noback_average./(sum(classification(:)==3))));
-%         dlmwrite('Other_homer_noback_average_150px_myfilt_nostedfilt.txt',(Other_homer_noback_average./(sum(classification(:)==3))));
+%         dlmwrite('Other_sted_noback_average_150px_mydiofilt_nostedfilt.txt',(Other_sted_noback_average./(sum(classification(:)==3))));
+%         dlmwrite('Other_dio_noback_average_150px_mydiofilt_nostedfilt.txt',(Other_dio_noback_average./(sum(classification(:)==3))));
+%         dlmwrite('Other_homer_noback_average_150px_mydiofilt_nostedfilt.txt',(Other_homer_noback_average./(sum(classification(:)==3))));
 %         
-%         dlmwrite('Other_sted_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Other_sted_norm2shaft_average./(sum(classification(:)==1))));
-%         dlmwrite('Other_dio_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Other_dio_norm2shaft_average./(sum(classification(:)==1))));
-%         dlmwrite('Other_homer_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Other_homer_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Other_sted_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Other_sted_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Other_dio_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Other_dio_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Other_homer_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Other_homer_norm2shaft_average./(sum(classification(:)==1))));
 %         
-%         dlmwrite('Other_sted_noback_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Other_sted_noback_norm2shaft_average./(sum(classification(:)==1))));
-%         dlmwrite('Other_dio_noback_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Other_dio_noback_norm2shaft_average./(sum(classification(:)==1))));
-%         dlmwrite('Other_homer_noback_norm2shaft_average_150px_myfilt_nostedfilt.txt',(Other_homer_noback_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Other_sted_noback_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Other_sted_noback_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Other_dio_noback_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Other_dio_noback_norm2shaft_average./(sum(classification(:)==1))));
+%         dlmwrite('Other_homer_noback_norm2shaft_average_150px_mydiofilt_nostedfilt.txt',(Other_homer_noback_norm2shaft_average./(sum(classification(:)==1))));
         
-        dlmwrite('vertical_shifts_150px_myfilt_nostedfilt.txt',vertical_shifts);
-        dlmwrite('horizontal_shifts_150px_myfilt_nostedfilt.txt',horizontal_shifts);
-        dlmwrite('rotation_angles_150px_myfilt_nostedfilt.txt',rotation_angles);
+        dlmwrite('vertical_shifts_150px_mydiofilt_nostedfilt.txt',vertical_shifts);
+        dlmwrite('horizontal_shifts_150px_mydiofilt_nostedfilt.txt',horizontal_shifts);
+        dlmwrite('rotation_angles_150px_mydiofilt_nostedfilt.txt',rotation_angles);
         
 %         movefile classification.txt classification_original.txt
 %         dlmwrite('classification.txt',classification); %write the classification file again to account for errors and the excluded spots.

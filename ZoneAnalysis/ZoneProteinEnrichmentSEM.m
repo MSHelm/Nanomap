@@ -235,7 +235,7 @@ writetable(T_flat_p_FDR,[cd_path filesep 'ProteinZoneEnrichment_flat.xlsx'],'Wri
 writetable(T_mush_p_bonf,[cd_path filesep 'ProteinZoneEnrichment_mush.xlsx'],'WriteVariableNames',1,'WriteRowNames',1,'Sheet','bonferroni p-values');
 writetable(T_flat_p_bonf,[cd_path filesep 'ProteinZoneEnrichment_flat.xlsx'],'WriteVariableNames',1,'WriteRowNames',1,'Sheet','bonferroni p-values');
 
-pclose(w)
+close(w)
 
 
 %% Calculate Fold over average

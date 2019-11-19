@@ -9,7 +9,7 @@ clear class* avg dir* files folders img_* names* sd sem
 
 classes={'Mush', 'Flat', 'Other'}; %Order is important so that it follows the classification numbering!!!
 channels={'dio','homer','sted'};
-avg_type={'_150px_myfilt','_150px_myfilt_nostedfilt','_150px_nodiofilt_nostedfilt'};%'_150px_myfilt','_150px_myfilt_nostedfilt','_150px_nodiofilt_nostedfilt'}; %
+avg_type={'_150px_myfilt','_150px_mydiofilt_nostedfilt','_150px_nodiofilt_nostedfilt'};%'_150px_myfilt','_150px_myfilt_nostedfilt','_150px_nodiofilt_nostedfilt'}; %
 %first go to Replicate2 folder to only check for proteins that I actually
 %already did a second replicate
 rep1='Z:\user\mhelm1\Nanomap_Analysis\Data\Replicate1';

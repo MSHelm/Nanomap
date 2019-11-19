@@ -15,9 +15,9 @@ results=zeros(numel(folders),2);
 
 for i=1:numel(folders)
     cd([cd_path filesep folders{i}]);
-    mush_filt=dlmread('Mush_sted_average_150px_myfilt_nostedfilt_total.txt');
+    mush_filt=dlmread('Mush_sted_average_150px_mydiofilt_nostedfilt_total.txt');
     mush_nofilt=dlmread('Mush_sted_average_150px_nodiofilt_nostedfilt_total.txt');
-    flat_filt=dlmread('Flat_sted_average_150px_myfilt_nostedfilt_total.txt');
+    flat_filt=dlmread('Flat_sted_average_150px_mydiofilt_nostedfilt_total.txt');
     flat_nofilt=dlmread('flat_sted_average_150px_nodiofilt_nostedfilt_total.txt');
     results(i,1)=sum(mush_filt(:))/sum(mush_nofilt(:));
     results(i,2)=sum(flat_filt(:))/sum(flat_nofilt(:));
