@@ -60,7 +60,7 @@ end
 
 
 for abcdef=1:numel(prot_list)
-    try
+%     try
         UID=allocation_raw{prot_list(abcdef),2};
         name=allocation_raw(prot_list(abcdef),1);
         
@@ -248,7 +248,8 @@ for abcdef=1:numel(prot_list)
             nums=distrib*incyt/100;
             
             for i=1:15
-                ccc=find(zones==i); 
+                try
+                ccc=find(zones==i & (orgs==6 | orgs==1)); 
                 num=round(nums(i));
                 rpp=floor(num/numel(ccc));
                 matrixview(ccc)=matrixview(ccc)+rpp;
@@ -257,6 +258,10 @@ for abcdef=1:numel(prot_list)
                 matrixview(ccc(ppp(1:floor(rpp/2))))=matrixview(ccc(ppp(1:floor(rpp/2))))+1;
                 ppp=randperm(numel(ccc));
                 matrixview(ccc(ppp(1:floor(rpp/2))))=matrixview(ccc(ppp(1:floor(rpp/2))))+1;
+                catch
+                    disp(['Problem scattering the protein ' char(name) ' in zone ' num2str(i)])
+                    continue
+                end
             end
             
         end
@@ -445,10 +450,10 @@ for abcdef=1:numel(prot_list)
         copynum_raw{copynum_row,51}=copynum_raw{copynum_row,50}*copynum_raw{copynum_row,23}/copynum_raw{copynum_row,22};
         
         
-    catch
-        disp(['Error in protein ' name{:} '. Skipping it'])
-        continue
-    end
+%     catch
+%         disp(['Error in protein ' name{:} '. Skipping it'])
+%         continue
+%     end
 end
 % Do I really still need this?
 xlswrite('Z:\user\mhelm1\Subcellular Distribution Analysis\THE COPY NUMBER FILE_SE0.xlsx',copynum_raw);

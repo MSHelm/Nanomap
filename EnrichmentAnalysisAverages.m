@@ -32,7 +32,7 @@ for i=1:numel(folders)
     results_flat.UID{i}=UID;
     
     sted_mush=dlmread('Mush_sted_average_150px_myfilt_total.txt');
-    sted_mush_sem=dlmread('Mush_sted_average_150px_myfilt_nostedfilt_total_sem.txt');
+    sted_mush_sem=dlmread('Mush_sted_average_150px_myfilt_total_sem.txt');
     sted_flat=dlmread('Flat_sted_average_150px_myfilt_total.txt');
     sted_flat_sem=dlmread('Flat_sted_average_150px_myfilt_total_sem.txt');
     
