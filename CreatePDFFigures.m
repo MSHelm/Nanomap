@@ -57,7 +57,9 @@ for i=1:numel(folders)
                 homer_bw=edge(homer_bw);
                 homer_bw=bwboundaries(homer_bw);
                 f1=figure('Visible','off');
-                imagesc(a); axis equal; axis off; hold on; plot(dio_bw{1}(:,2),dio_bw{1}(:,1),'w','LineWidth',2); plot(homer_bw{2}(:,2),homer_bw{2}(:,1),'g','LineWidth',2); hold off;
+                  imagesc(a); axis equal; axis off; hold on; plot(dio_bw{1}(:,2),dio_bw{1}(:,1),'Color', [0, 1,0.094], 'LineWidth',4); plot(homer_bw{2}(:,2),homer_bw{2}(:,1),'Color', [0, 0.529, 0.996], 'LineWidth',4); hold off;
+              
+%                 imagesc(a); axis equal; axis off; hold on; plot(dio_bw{1}(:,2),dio_bw{1}(:,1),'w','LineWidth',2); plot(homer_bw{2}(:,2),homer_bw{2}(:,1),'g','LineWidth',2); hold off;
                 export_fig([cd_path filesep folders{i} filesep folders{i} '_' txt_files{j}(1:end-4) '_outlines'], '-transparent', '-CMYK', '-q101','-png');
                 close(f1);
             elseif strcmp(txt_files{j},'Flat_sted_average_150px_myfilt_total.txt')
@@ -71,7 +73,7 @@ for i=1:numel(folders)
                 homer_bw=edge(homer_bw);
                 homer_bw=bwboundaries(homer_bw);
                 f1=figure('Visible','off');
-                imagesc(a); axis equal; axis off; hold on; plot(dio_bw{1}(:,2),dio_bw{1}(:,1),'w','LineWidth',2); plot(homer_bw{2}(:,2),homer_bw{2}(:,1),'g','LineWidth',2); hold off;
+                imagesc(a); axis equal; axis off; hold on; plot(dio_bw{1}(:,2),dio_bw{1}(:,1),'Color', [0, 1,0.094],'LineWidth',4); plot(homer_bw{2}(:,2),homer_bw{2}(:,1), 'Color', [0, 0.529, 0.996],'LineWidth',4); hold off;
                 export_fig([cd_path filesep folders{i} filesep folders{i} '_' txt_files{j}(1:end-4) '_outlines'], '-transparent', '-CMYK', '-q101','-png');
                 close(f1);
             end
