@@ -358,7 +358,7 @@ for abcdef=1:numel(prot_list)
         copynum_raw{copynum_row,48}=PSDNum;
         copynum_raw{copynum_row,49}=PSDNum*copynum_raw{copynum_row,25}/copynum_raw{copynum_row,24};  %calculate the SEM based on the Flat spine copy number
         copynum_raw{copynum_row,52}=copynum_raw{copynum_row,48}/copynum_raw{copynum_row,24}*100;
-        copynum_raw{copynum_row,53}=copynum_raw{copynum_row,52}*copynum_raw{copynum_row,24}/copynum_raw{copynum_row,24};
+        copynum_raw{copynum_row,53}=copynum_raw{copynum_row,52}*copynum_raw{copynum_row,24}/copynum_raw{copynum_row,25};
     catch
         disp(['Error in protein ' name{:} '. Skipping it'])
         continue

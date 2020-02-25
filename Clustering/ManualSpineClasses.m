@@ -34,8 +34,8 @@ for class = 1:numel(classes)
     writetable(logdata,['MorphData_ManualClusters_' classes{class} '.xlsx'],'Sheet','cluster_borders','WriteVariableNames',true);
     
     % Assign each file to one of the clusters
-%     If it cannot be assigned, e.g. because the PSD coult not be measured
-%     automatically, it will keep the 0 as the cluster index (idx)
+    %     If it cannot be assigned, e.g. because the PSD coult not be measured
+    %     automatically, it will keep the 0 as the cluster index (idx)
     idx = zeros(size(data,1),1);
     head_s = data.HeadArea < logdata.HeadArea;
     head_l = data.HeadArea >= logdata.HeadArea;
@@ -159,6 +159,35 @@ for class = 1:numel(classes)
         lib=cat(1,lib_rep1,lib_rep2);
         
         
+        %% To make the data comparable, I must scale them equally as I did for the total average. Therefore, I need to get the maximum for each replicate here as well and scale the images accordingly
+        channels = {'dio','homer','sted'};
+        rep1 = 'Z:\user\mhelm1\Nanomap_Analysis\Data\Replicate1';
+        rep2 = 'Z:\user\mhelm1\Nanomap_Analysis\Data\Replicate2';
+        
+        max_rep1 = struct();
+        max_rep2 = struct();
+        
+        
+        for channel = 1:numel(channels)
+            [~, names_rep1] = fileattrib([rep1 filesep path{1} filesep channels{channel} '_aligned_150px_myfilt*.txt']);
+            names_rep1 = natsortfiles({names_rep1.Name});
+            [~, names_rep2] = fileattrib([rep2 filesep path{2} filesep channels{channel} '_aligned_150px_myfilt*.txt']);
+            names_rep2 = natsortfiles({names_rep2.Name});
+            
+            img_rep1 = zeros(151,151,numel(names_rep1));
+            img_rep2 = zeros(151,151,numel(names_rep2));
+            
+            parfor n = 1:numel(names_rep2)
+                img_rep2(:,:,n) = dlmread(names_rep2{n});
+            end
+            
+            parfor n = 1:numel(names_rep1)
+                img_rep1(:,:,n) = dlmread(names_rep1{n});
+            end
+            max_rep1.(channels{channel}) = max(img_rep1(:));
+            max_rep2.(channels{channel}) = max(img_rep2(:));
+            
+        end
         %% Loop over the cluster IDs and find all spots that correspond to the cluster for the protein. Average them
         unique_ids = unique(cluster_id);
         for i=1:numel(unique_ids)
@@ -169,9 +198,19 @@ for class = 1:numel(classes)
             sted=zeros(151,151,numel(spots_cluster));
             for j=1:numel(spots_cluster)
                 spots_avg_num=find(contains(lib(:,1),spots_cluster{j}));
-                dio(:,:,j)=dlmread(lib{spots_avg_num,2});
-                homer(:,:,j)=dlmread(lib{spots_avg_num,3});
-                sted(:,:,j)=dlmread(lib{spots_avg_num,4});
+                if contains(spots_cluster{j},'Replicate1')
+                    dio(:,:,j)=(dlmread(lib{spots_avg_num,2}))/max_rep1.dio*255;
+                    homer(:,:,j)=(dlmread(lib{spots_avg_num,3}))/max_rep1.homer*255;
+                    sted(:,:,j)=(dlmread(lib{spots_avg_num,4}))/max_rep1.sted*255;
+                elseif contains(spots_cluster{j},'Replicate2')
+                    dio(:,:,j)=(dlmread(lib{spots_avg_num,2}))/max_rep2.dio*255;
+                    homer(:,:,j)=(dlmread(lib{spots_avg_num,3}))/max_rep2.homer*255;
+                    sted(:,:,j)=(dlmread(lib{spots_avg_num,4}))/max_rep2.sted*255;
+                else
+                    disp('Error')
+                    break
+                end
+                
             end
             
             save(['ClusterAverages' filesep proteinnames{protein} filesep 'CombinedImageStack_' classes{class} '_dio_cluster' num2str(cluster_idx) '.mat'],'dio');
@@ -186,25 +225,29 @@ for class = 1:numel(classes)
             dlmwrite(['ClusterAverages' filesep proteinnames{protein} filesep proteinnames{protein} '_' classes{class} '_homer_cluster' num2str(cluster_idx) '.txt'],homer_avg);
             dlmwrite(['ClusterAverages' filesep proteinnames{protein} filesep proteinnames{protein} '_' classes{class} '_sted_cluster' num2str(cluster_idx) '.txt'],sted_avg);
             
+            delete(['ClusterAverages' filesep proteinnames{protein} filesep '*.png']);
+            delete(['ClusterAverages' filesep proteinnames{protein} filesep '*.pdf']);
+            
+            
             f1=figure('Visible','off');
             imagesc(dio_avg);
             axis equal;
             axis off;
-            export_fig(['ClusterAverages' filesep proteinnames{protein} filesep proteinnames{protein} '_' classes{class} '_dio_cluster' num2str(cluster_idx)], '-png', '-pdf', '-q101', '-transparent');
+            export_fig(['ClusterAverages' filesep proteinnames{protein} filesep proteinnames{protein} '_' classes{class} '_dio_cluster' num2str(cluster_idx)], '-png', '-q101', '-transparent');
             close(f1);
             
             f1=figure('Visible','off');
             imagesc(homer_avg);
             axis equal;
             axis off;
-            export_fig(['ClusterAverages' filesep proteinnames{protein} filesep proteinnames{protein} '_' classes{class} '_homer_cluster' num2str(cluster_idx)], '-png', '-pdf', '-q101', '-transparent');
+            export_fig(['ClusterAverages' filesep proteinnames{protein} filesep proteinnames{protein} '_' classes{class} '_homer_cluster' num2str(cluster_idx)], '-png', '-q101', '-transparent');
             close(f1);
             
             f1=figure('Visible','off');
             imagesc(sted_avg);
             axis equal;
             axis off;
-            export_fig(['ClusterAverages' filesep proteinnames{protein} filesep proteinnames{protein} '_' classes{class} '_sted_cluster' num2str(cluster_idx)], '-png', '-pdf', '-q101', '-transparent');
+            export_fig(['ClusterAverages' filesep proteinnames{protein} filesep proteinnames{protein} '_' classes{class} '_sted_cluster' num2str(cluster_idx)], '-png', '-q101', '-transparent');
             close(f1)
         end
     end
@@ -260,9 +303,9 @@ for folder = 1:numel(folders)
         cluster_intensities_PSD = {};
         
         for cluster = 1:numel(clusters)
-%             If there are no members in the cluster I also have no
-%             CombinedImageStack file for it. if that is the case, write
-%             NaN into the results cell and go to next cluster
+            %             If there are no members in the cluster I also have no
+            %             CombinedImageStack file for it. if that is the case, write
+            %             NaN into the results cell and go to next cluster
             if ~exist(['CombinedImageStack_' classes{class} '_sted_cluster' num2str(cluster) '.mat'])
                 cluster_intensities_spine{1,cluster} = nan;
                 cluster_intensities_PSD{1,cluster} = nan;
@@ -289,7 +332,7 @@ for folder = 1:numel(folders)
             intensities_mean = reshape(intensities_mean,[size(img_both,1)*size(img_both,2),size(img_both,3)]);
             intensities_mean = sum(intensities_mean,1);
             intensities_PSD = intensities_PSD/mean(intensities_mean);
-            cluster_intensities_PSD{1,cluster} = intensities_PSD';    
+            cluster_intensities_PSD{1,cluster} = intensities_PSD';
             
             %             Determine Zone Enrichment for each cluster
             
@@ -325,7 +368,7 @@ for folder = 1:numel(folders)
             %             end
             %
         end
-
+        
         if numel(clusters)>1
             cluster_intensities_spine = padcat(cluster_intensities_spine{:});
             cluster_intensities_PSD = padcat(cluster_intensities_PSD{:});
