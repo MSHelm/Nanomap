@@ -32,7 +32,7 @@ for class = 1:numel(classes)
     spots=reshape([spotresults(:,:,1); spotresults(:,:,2)] ,size(spotresults,1),[]);
     spotresult.(classes{class})=spots;
 end
-
+save([cd_path filesep 'spotresult.m'], 'spotresult');
 
 
 %%         Extract the respective images
@@ -66,32 +66,32 @@ for class = 1:numel(classes)
                     if spotnum(spot)==0
                         continue
                     elseif spotnum(spot)==1
-                        bfsave(img,['Z:\user\mhelm1\Manuscripts\2019_Dendritic spine Nanomap paper\Figures\SuppFig6-PSD nanomodules\RepresentativeMushroomImages\1\Image_' num2str(k) '.ome.tiff'])
+                        bfsave(img,['Z:\user\mhelm1\Nanomap_Analysis\Analysis\PSDnanomodules\RepresentativeMushroomImages\1\Image_' num2str(k) '.ome.tiff'])
                         
                     elseif spotnum(spot)==2
-                        bfsave(img,['Z:\user\mhelm1\Manuscripts\2019_Dendritic spine Nanomap paper\Figures\SuppFig6-PSD nanomodules\RepresentativeMushroomImages\2\Image_' num2str(k) '.ome.tiff'])
+                        bfsave(img,['Z:\user\mhelm1\Nanomap_Analysis\Analysis\PSDnanomodules\RepresentativeMushroomImages\2\Image_' num2str(k) '.ome.tiff'])
                         
                     elseif spotnum(spot)==3
-                        bfsave(img,['Z:\user\mhelm1\Manuscripts\2019_Dendritic spine Nanomap paper\Figures\SuppFig6-PSD nanomodules\RepresentativeMushroomImages\3\Image_' num2str(k) '.ome.tiff'])
+                        bfsave(img,['Z:\user\mhelm1\Nanomap_Analysis\Analysis\PSDnanomodules\RepresentativeMushroomImages\3\Image_' num2str(k) '.ome.tiff'])
                         
                     elseif spotnum(spot)>3
-                        bfsave(img,['Z:\user\mhelm1\Manuscripts\2019_Dendritic spine Nanomap paper\Figures\SuppFig6-PSD nanomodules\RepresentativeMushroomImages\over3\Image_' num2str(k) '.ome.tiff'])
+                        bfsave(img,['Z:\user\mhelm1\Nanomap_Analysis\Analysis\PSDnanomodules\RepresentativeMushroomImages\over3\Image_' num2str(k) '.ome.tiff'])
                     end
                     
                 elseif class==2
                     if spotnum(spot)==0
                         continue
                     elseif spotnum(spot)==1
-                        bfsave(img,['Z:\user\mhelm1\Manuscripts\2019_Dendritic spine Nanomap paper\Figures\SuppFig6-PSD nanomodules\RepresentativeStubbyImages\1\Image_' num2str(k) '.ome.tiff'])
+                        bfsave(img,['Z:\user\mhelm1\Nanomap_Analysis\Analysis\PSDnanomodules\RepresentativeStubbyImages\1\Image_' num2str(k) '.ome.tiff'])
                         
                     elseif spotnum(spot)==2
-                        bfsave(img,['Z:\user\mhelm1\Manuscripts\2019_Dendritic spine Nanomap paper\Figures\SuppFig6-PSD nanomodules\RepresentativeStubbyImages\2\Image_' num2str(k) '.ome.tiff'])
+                        bfsave(img,['Z:\user\mhelm1\Nanomap_Analysis\Analysis\PSDnanomodules\RepresentativeStubbyImages\2\Image_' num2str(k) '.ome.tiff'])
                         
                     elseif spotnum(spot)==3
-                        bfsave(img,['Z:\user\mhelm1\Manuscripts\2019_Dendritic spine Nanomap paper\Figures\SuppFig6-PSD nanomodules\RepresentativeStubbyImages\3\Image_' num2str(k) '.ome.tiff'])
+                        bfsave(img,['Z:\user\mhelm1\Nanomap_Analysis\Analysis\PSDnanomodules\RepresentativeStubbyImages\3\Image_' num2str(k) '.ome.tiff'])
                         
                     elseif spotnum(spot)>3
-                        bfsave(img,['Z:\user\mhelm1\Manuscripts\2019_Dendritic spine Nanomap paper\Figures\SuppFig6-PSD nanomodules\RepresentativeStubbyImages\over3\Image_' num2str(k) '.ome.tiff'])
+                        bfsave(img,['Z:\user\mhelm1\Nanomap_Analysis\Analysis\PSDnanomodules\RepresentativeStubbyImages\over3\Image_' num2str(k) '.ome.tiff'])
                     end
                 end
 

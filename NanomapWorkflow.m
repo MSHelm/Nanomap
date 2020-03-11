@@ -58,6 +58,5 @@ for_lego_model_stubby_organelles;
 for_lego_model_stubby_use_play(0);
 
 CorrelationHomerSTED;
-DoFCM;
  
 

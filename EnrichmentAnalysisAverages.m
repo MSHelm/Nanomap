@@ -1,4 +1,6 @@
 function EnrichmentAnalysisAverages()
+%Analyze Enrichment in head or PSD in average pictures
+%Reads in the averages file and calculates how much a protein is enriched in the PSD and the head, compared to the shaft
 
 cd_path='Z:\user\mhelm1\Nanomap_Analysis\Data\total';
 cd(cd_path);

@@ -1,5 +1,6 @@
 function CorrelationAnalysisBigDataTable(FDR)
-
+%Prepares my data for analyzing potential correlations of my protein zone
+%enrichment or copy numbers with all the data that Eugenio compiled in his big_data table
 PrepareBigDataTable;
 PreparePolishedMatFile;
 DoCorrelations(FDR);
@@ -11,7 +12,7 @@ FullDatasetAnalysis;
         bigTable=readtable('Z:\user\mhelm1\Nanomap_Analysis\Analysis\big_data_comparison\FINAL_BIG_TABLE_SILVIO_sorted.xlsx','ReadRowNames',1,'ReadVariableNames',1,'Sheet','data from Martin');
         
         % Read in copy number table
-        copynumTable=readtable('Z:\user\mhelm1\Subcellular Distribution Analysis\THE COPY NUMBER FILE_SE0.xlsx','ReadRowNames',1,'ReadVariableNames',1,'Sheet','Tabelle1');
+        copynumTable=readtable('Z:\user\mhelm1\Nanomap_Analysis\Copy Numbers\THE COPY NUMBER FILE_SE0.xlsx','ReadRowNames',1,'ReadVariableNames',1,'Sheet','Tabelle1');
         % Read in Enrichment tables
         PSDEnrichTableMush=load('Z:\user\mhelm1\Nanomap_Analysis\Data\total\EnrichmentAnalysisAverages_mush.mat');
         PSDEnrichTableMush=PSDEnrichTableMush.results_mush;
@@ -171,7 +172,7 @@ FullDatasetAnalysis;
         bigTable=readtable('Z:\user\mhelm1\Nanomap_Analysis\Analysis\big_data_comparison\FINAL_BIG_TABLE_SILVIO_sorted.xlsx','ReadRowNames',1,'ReadVariableNames',1,'Sheet','big table');
         
         % Read in the my whole-cell proteome file
-        copynums=readtable('Z:\user\mhelm1\Subcellular Distribution Analysis\270219_revised_SwissProt_ids_copy number.xlsx','Sheet','combined','ReadVariableNames',1);
+        copynums=readtable('Z:\user\mhelm1\Nanomap_Analysis\Copy Numbers\270219_revised_SwissProt_ids_copy number.xlsx','Sheet','combined','ReadVariableNames',1);
         
         results=cell2table(cell(0,6),'VariableNames',{'GeneName','wholecell_copynumber','iBAQ_average','Kim_mRNA_fetal_brain', 'Kim_mRNA_Adult_Frontal_Cortex', 'Kim_Prot_Adult_Frontal_Cortex'});
         
