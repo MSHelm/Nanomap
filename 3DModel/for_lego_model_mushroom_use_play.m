@@ -26,7 +26,7 @@ UID_list=name_UID(:,2);
 [distribs, ~]=xlsread('zone_distribution_from_images.xlsx','sted_mush');
 
 %read in copy number file
-[~,~,copynum_raw]=xlsread('Z:\user\mhelm1\Subcellular Distribution Analysis\THE COPY NUMBER FILE_SE0.xlsx');
+[~,~,copynum_raw]=xlsread('Z:\user\mhelm1\Nanomap_Analysis\Copy Numbers\THE COPY NUMBER FILE_SE0.xlsx');
 copynum_UID=copynum_raw(:,2);
 
 %dont need this anymore as it is in the allocation cell [list, textt]=xlsread('zone_distribution_from_images.xlsx','Sheet1','N2:N57');
@@ -38,7 +38,7 @@ prot_list=ccc;
 
 
 %Read in the organelle and zone identities.
-cd ('Z:\user\mhelm1\Electron Microscopy\spines\for_models\new tracings with mito\Mushroom_new with missing spine_after debugging script');
+cd ('Z:\user\mhelm1\Nanomap_Analysis\Electron Microscopy\for_models\new tracings with mito\Mushroom_new with missing spine_after debugging script');
 load('matrix_organelle_identities_plus_endosomes_corrected.mat');
 orgs=matrix;
 
@@ -316,7 +316,7 @@ for abcdef=1:numel(prot_list)
             
             %subplot(1,2,abcdef);
             
-            [stat, mess]=fileattrib('Z:\user\mhelm1\Electron Microscopy\spines\for_models\new tracings with mito\Mushroom_new with missing spine_after debugging script\*_for_ves_numbers.txt');
+            [stat, mess]=fileattrib('Z:\user\mhelm1\Nanomap_Analysis\Electron Microscopy\for_models\new tracings with mito\Mushroom_new with missing spine_after debugging script\*_for_ves_numbers.txt');
             mm=[];
             for i=1:numel(mess); a=dlmread(mess(i).Name); mm(i)=max(max(a));end
             dim=max(mm);
@@ -456,7 +456,7 @@ for abcdef=1:numel(prot_list)
 %     end
 end
 % Do I really still need this?
-xlswrite('Z:\user\mhelm1\Subcellular Distribution Analysis\THE COPY NUMBER FILE_SE0.xlsx',copynum_raw);
+xlswrite('Z:\user\mhelm1\Nanomap_Analysis\Copy Numbers\THE COPY NUMBER FILE_SE0.xlsx',copynum_raw);
 
 
 end

@@ -1,7 +1,7 @@
 function corrector_MH
 
 % Correction script for the organelle and zone identities.
-cd 'Z:\user\mhelm1\Electron Microscopy\spines\for_models\new tracings with mito\Mushroom_new with missing spine_after debugging script'
+cd 'Z:\user\mhelm1\Nanomap_Analysis\Electron Microscopy\for_models\new tracings with mito\Mushroom_new with missing spine_after debugging script'
 close all
 load matrix_zone_identities.mat;
 matrix_new=matrix;

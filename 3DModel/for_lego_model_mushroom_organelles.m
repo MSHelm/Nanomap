@@ -1,7 +1,7 @@
 function for_lego_model_mushroom_organelles
 azx=[];azy=[];mx=[];my=[];cx=[];cy=[];pvesx=[];pvesy=[];uvesx=[];uvesy=[];dimensx=0;dimensy=0;mz=[];azz=[];cz=[];uvesz=[];pvesz=[];
 
-cd ('Z:\user\mhelm1\Electron Microscopy\spines\for_models\new tracings with mito\Mushroom_new with missing spine_after debugging script');
+cd ('Z:\user\mhelm1\Nanomap_Analysis\Electron Microscopy\for_models\new tracings with mito\Mushroom_new with missing spine_after debugging script');
 
 % % pixel_size=3.067; % nm
 % % dicke=70;

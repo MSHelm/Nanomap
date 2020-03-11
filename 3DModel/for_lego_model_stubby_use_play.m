@@ -27,7 +27,7 @@ UID_list=name_UID(:,2);
 [distribs, ~]=xlsread('zone_distribution_from_images.xlsx','sted_flat');
 
 %read in copy number file
-[~,~,copynum_raw]=xlsread('Z:\user\mhelm1\Subcellular Distribution Analysis\THE COPY NUMBER FILE_SE0.xlsx');
+[~,~,copynum_raw]=xlsread('Z:\user\mhelm1\Nanomap_Analysis\Copy Numbers\THE COPY NUMBER FILE_SE0.xlsx');
 copynum_UID=copynum_raw(:,2);
 
 %only show the proteins selected in the protein allocation file
@@ -35,7 +35,7 @@ ccc=find(cell2mat(allocation_raw(:,15)));
 prot_list=ccc;
 
 %Read in the organelle and zone identities.
-cd ('Z:\user\mhelm1\Electron Microscopy\spines\for_models\for_model_3D_stumpy');
+cd ('Z:\user\mhelm1\Nanomap_Analysis\Electron Microscopy\for_models\for_model_3D_stumpy');
 load('matrix_organelle_identities_plus_endosomes.mat');
 orgs=matrix;
 
@@ -276,7 +276,7 @@ for abcdef=1:numel(prot_list)
             % figure; imagesc(mm); colorbar; title(name); axis equal
             subplot(3,3,abcdef);
             
-            [stat, mess]=fileattrib('Z:\user\mhelm1\Electron Microscopy\spines\for_models\for_model_3D_stumpy\*_for_ves_numbers.txt');
+            [stat, mess]=fileattrib('Z:\user\mhelm1\Nanomap_Analysis\Electron Microscopy\for_models\for_model_3D_stumpy\*_for_ves_numbers.txt');
             mm=[];
             for i=1:numel(mess)
                 a=dlmread(mess(i).Name);
@@ -365,7 +365,7 @@ for abcdef=1:numel(prot_list)
     end
 end
 
-xlswrite('Z:\user\mhelm1\Subcellular Distribution Analysis\THE COPY NUMBER FILE_SE0.xlsx',copynum_raw);
+xlswrite('Z:\user\mhelm1\Nanomap_Analysis\Copy Numbers\THE COPY NUMBER FILE_SE0.xlsx',copynum_raw);
 end
 
 

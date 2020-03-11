@@ -1,6 +1,6 @@
 function STEDCorrelations
 results={};
-[~,~,copynumbers]=xlsread('Z:\user\mhelm1\Subcellular Distribution Analysis\Protein copy number overview.xlsx');
+[~,~,copynumbers]=xlsread('Z:\user\mhelm1\Nanomap_Analysis\Copy Numbers\Protein copy number overview.xlsx');
 copynum_UID=copynumbers(:,2);
 zoom=10;
 

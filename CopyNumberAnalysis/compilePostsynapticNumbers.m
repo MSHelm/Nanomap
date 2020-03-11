@@ -1,9 +1,8 @@
 function compilePostsynapticNumbers()
 
-addpath(genpath('Z:\user\mhelm1\Subcellular Distribution Analysis\Matlab Programs'));
 spinenumber=299;
 %specify path to parent image data folder
-the_folder='Z:\user\mhelm1\Subcellular Distribution Analysis\';
+the_folder='Z:\user\mhelm1\Nanomap_Analysis\Copy Numbers\';
 SE_erode=0;
 cd(the_folder);
 
@@ -11,14 +10,14 @@ cd(the_folder);
 %second_extend=2;
 
 %read in protein copy number overview file for synaptosomal protein numbers
-[synaptosome_data_num,synaptosome_data_txt,synaptosome_data]=xlsread('Z:\user\mhelm1\Subcellular Distribution Analysis\Protein copy number overview');
+[synaptosome_data_num,synaptosome_data_txt,synaptosome_data]=xlsread('Z:\user\mhelm1\Nanomap_Analysis\Copy Numbers\Protein copy number overview');
 synaptosome_UID=synaptosome_data_txt(:,2);
 
 %read in table with whole-cell results from Sunit. last parameter is the
 %raw data, which includes both numeric and text data. I use the
 %wholecell_UID to later find the correct row of the protein of interest and
 %then get the value from wholecell raw data
-[wholecell_num,wholecell_UID,wholecell]=xlsread('Z:\user\mhelm1\Subcellular Distribution Analysis\270219_revised_SwissProt_ids_copy number','combined');%,'L2:L4654');
+[wholecell_num,wholecell_UID,wholecell]=xlsread('Z:\user\mhelm1\Nanomap_Analysis\Copy Numbers\270219_revised_SwissProt_ids_copy number','combined');%,'L2:L4654');
 wholecell_UID=wholecell_UID(:,15);
 for i=1:numel(wholecell)
     wholecell{i}(wholecell{i}(:)==Inf)=nan;
