@@ -44,6 +44,7 @@ program_normalize_by_division_by_background_non_cellular;
 program_copy_number_qualifiers;
 process_files_for_maps_extract_zone_numbers;
 EnrichmentAnalysisAverages;
+EnrichmentCorrelationMushFlat;
 
 reps_ms={'Z:\user\mhelm1\Nanomap_Analysis\Copy Numbers\Replicate1','Z:\user\mhelm1\Nanomap_Analysis\Copy Numbers\Replicate2'};
 for i=1:numel(reps_ms)

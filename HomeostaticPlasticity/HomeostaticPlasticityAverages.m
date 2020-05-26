@@ -11,7 +11,8 @@ reps=reps(contains(reps,'\Analysis\'));
 
 for i=1:numel(reps)
     try
-        align_images_imwarp_parallelized_150px_myfilt(reps{i});
+        %         align_images_imwarp_parallelized_150px_myfilt(reps{i});
+        align_images_imwarp_parallelized_150px_nodiofilt_nostedfilt(reps{i});
     catch
         continue
     end
@@ -55,7 +56,7 @@ cd(cd_path)
 treatments={'Bic','Bic4AP','LTP','TTX','CNQXAP5','Untreated'};
 classes={'Mush', 'Flat', 'Other'}; %Order is important so that it follows the classification numbering!!!
 channels={'dio','homer','sted'};
-% avg_type={'_150px_orig','_nofilt_150px','_fullimg','_nofilt_fullimg','_150px_aligntop','_150px_myfilt'};
+avg_type={'_150px_nodiofilt_nostedfilt'}; %{'_150px_orig','_nofilt_150px','_fullimg','_nofilt_fullimg','_150px_aligntop','_150px_myfilt'};
 
 
 %Get all protein folders
@@ -90,59 +91,61 @@ for i=1:numel(proteins)
         mkdir('Untreated');
     end
     
-    for l=1:numel(classes)
-        
-        for m=1:numel(channels)
-            %Initialize results structure
-            results=struct('Bic',[],...
-                'Bic4AP',[],...
-                'LTP',[],...
-                'TTX',[],...
-                'CNQXAP5',[],...
-                'Untreated',[]);
+    for avg_tp = 1:numel(avg_type)
+        for l=1:numel(classes)
             
-            for j=1:numel(subfolders)
-                for k=1:numel(treatments)
-                    try
-                        cd([cd_path filesep proteins{i} filesep subfolders{j} filesep 'Analysis' filesep 'Manual axis selection with neck' filesep treatments{k}]);
-                        repdata=[];
-                        [~, mess]=fileattrib([channels{m} '_aligned_150px_myfilt*.txt']);
-                        mess=natsortfiles({mess.Name});
-                        %                     [~,order]=sort({mess.Name});mess=mess(order);order=[]; %sort to avoid unordered spot files due to server bugs
-                        class=dlmread('classification.txt');
-                        class(class==4)=[];
-                        mess=mess(class==l);
-                        
-                        repdata=zeros(151,151,numel(mess));
-                        if isempty(mess)
+            for m=1:numel(channels)
+                %Initialize results structure
+                results=struct('Bic',[],...
+                    'Bic4AP',[],...
+                    'LTP',[],...
+                    'TTX',[],...
+                    'CNQXAP5',[],...
+                    'Untreated',[]);
+                
+                for j=1:numel(subfolders)
+                    for k=1:numel(treatments)
+                        try
+                            cd([cd_path filesep proteins{i} filesep subfolders{j} filesep 'Analysis' filesep 'Manual axis selection with neck' filesep treatments{k}]);
+                            repdata=[];
+                            [~, mess]=fileattrib([channels{m} '_aligned' avg_type{avg_tp} '*.txt']);
+                            mess=natsortfiles({mess.Name});
+                            %                     [~,order]=sort({mess.Name});mess=mess(order);order=[]; %sort to avoid unordered spot files due to server bugs
+                            class=dlmread('classification.txt');
+                            class(class==4)=[];
+                            mess=mess(class==l);
+                            
+                            repdata=zeros(151,151,numel(mess));
+                            if isempty(mess)
+                                continue
+                            end
+                            
+                            %                     parfor n=1:numel(mess)
+                            for n=1:numel(mess)
+                                repdata(:,:,n)=dlmread(mess{n});
+                            end
+                            repdata=(repdata/max(repdata(:)))*255;
+                            results.(treatments{k})=cat(3,results.(treatments{k}),repdata);
+                        catch
+                            disp(['Error in ' subfolders{j} '_' treatments{k} '. Skipping it']);
                             continue
                         end
-                        
-                        %                     parfor n=1:numel(mess)
-                        for n=1:numel(mess)
-                            repdata(:,:,n)=dlmread(mess{n});
-                        end
-                        repdata=(repdata/max(repdata(:)))*255;
-                        results.(treatments{k})=cat(3,results.(treatments{k}),repdata);
-                    catch
-                        disp(['Error in ' subfolders{j} '_' treatments{k} '. Skipping it']);
-                        continue
                     end
-                end
-                save([cd_path filesep proteins{i} filesep classes{l} '_' channels{m} '_CombinedImageStack.mat'],'results')
-                
-                fields=fieldnames(results);
-                for j=1:numel(fields)
-                    [avg, sd, sem]=deal(zeros(151));
+                    save([cd_path filesep proteins{i} filesep classes{l} '_' channels{m} '_CombinedImageStack' avg_type{avg_tp} '.mat'],'results')
                     
-                    avg=mean(results.(fields{j}),3);
-                    sd=std(results.(fields{j}),0,3);
-                    sem=sd/sqrt(size(results.(fields{j}),3));
-                    
-                    dlmwrite([cd_path filesep proteins{i} filesep fields{j} filesep classes{l} '_' channels{m} '_' fields{j} '_total.txt'],avg);
-                    dlmwrite([cd_path filesep proteins{i} filesep fields{j} filesep classes{l} '_' channels{m} '_' fields{j} '_total_sd.txt'],sd);
-                    dlmwrite([cd_path filesep proteins{i} filesep fields{j} filesep classes{l} '_' channels{m} '_' fields{j} '_total_sem.txt'],sem);
-                    
+                    fields=fieldnames(results);
+                    for j=1:numel(fields)
+                        [avg, sd, sem]=deal(zeros(151));
+                        
+                        avg=mean(results.(fields{j}),3);
+                        sd=std(results.(fields{j}),0,3);
+                        sem=sd/sqrt(size(results.(fields{j}),3));
+                        
+                        dlmwrite([cd_path filesep proteins{i} filesep fields{j} filesep classes{l} '_' channels{m} '_' fields{j} avg_type{avg_tp} '_total.txt'],avg);
+                        dlmwrite([cd_path filesep proteins{i} filesep fields{j} filesep classes{l} '_' channels{m} '_' fields{j} avg_type{avg_tp} '_total_sd.txt'],sd);
+                        dlmwrite([cd_path filesep proteins{i} filesep fields{j} filesep classes{l} '_' channels{m} '_' fields{j} avg_type{avg_tp} '_total_sem.txt'],sem);
+                        
+                    end
                 end
             end
         end
